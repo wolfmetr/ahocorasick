@@ -102,7 +102,7 @@ func TestConcurrent(t *testing.T) {
 	wg.Wait()
 }
 
-func BenchmarkOfw(b *testing.B) {
+func BenchmarkOfwMatch(b *testing.B) {
 
 	ac := NewMatcher()
 	ac.Build([]string{"foo", "bar", "baz"})
@@ -114,13 +114,25 @@ func BenchmarkOfw(b *testing.B) {
 	b.ReportAllocs()
 }
 
-//func BenchmarkCloudflare(b *testing.B) {
+func BenchmarkOfwMatchWithHint(b *testing.B) {
+
+	ac := NewMatcher()
+	ac.Build([]string{"foo", "bar", "baz"})
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		ac.MatchWithHint("fooasldkjflaksjbarsdfasdfbazasdfdf", 4)
+	}
+	b.ReportAllocs()
+}
+
+// func BenchmarkCloudflare(b *testing.B) {
 //	ac := ahocorasick.NewStringMatcher([]string{"foo", "bar", "baz"})
 //	b.ResetTimer()
 //	for i := 0; i < b.N; i++ {
 //		ac.Match([]byte("fooasldkjflaksjbarsdfasdfbazasdfdf"))
 //	}
-//}
+// }
 
 func TestNoPatterns(t *testing.T) {
 	m := NewMatcher()

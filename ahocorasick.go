@@ -60,11 +60,15 @@ func (this *Matcher) Build(dictionary []string) {
 // string match search
 // return all strings matched as indexes into the original dictionary
 func (this *Matcher) Match(s string) []uint32 {
+	return this.MatchWithHint(s, int(this.size))
+}
+
+func (this *Matcher) MatchWithHint(s string, h int) []uint32 {
 	curNode := this.root
 	mark := make([]bool, this.size)
 	var p *trieNode = nil
 
-	ret := make([]uint32, 0, this.size)
+	ret := make([]uint32, 0, h)
 
 	for _, v := range []byte(s) {
 		for curNode.child[v] == nil && curNode != this.root {
